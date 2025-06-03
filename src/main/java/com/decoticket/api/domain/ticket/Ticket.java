@@ -41,6 +41,6 @@ public class Ticket {
     private Coupon coupon;
 
     private LocalDateTime purchaseDate;
-    private String status;
+    private boolean isChecked;
     private float finalPrice;
 }
