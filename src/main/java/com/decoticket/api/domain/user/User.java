@@ -1,9 +1,7 @@
 package com.decoticket.api.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import com.decoticket.api.domain.ticket.Ticket;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +27,8 @@ public class User {
     private String identification;
     private String role = "User";
     private Boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 }

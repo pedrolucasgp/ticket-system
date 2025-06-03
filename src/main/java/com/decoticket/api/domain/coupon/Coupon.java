@@ -26,5 +26,5 @@ public class Coupon {
     private String code;
     private float discount;
     private boolean percentage;
-    private Date valid;
+    private boolean isValid;
 }

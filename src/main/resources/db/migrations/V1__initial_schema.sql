@@ -3,10 +3,10 @@ CREATE TABLE coupon (
     code VARCHAR(255),
     discount FLOAT4 NOT NULL,
     percentage BOOLEAN NOT NULL,
-    valid TIMESTAMP(6)
+    is_valid BOOLEAN NOT NULL
 );
 
-CREATE TABLE event (
+CREATE TABLE "user" (
     id UUID NOT NULL PRIMARY KEY,
     email VARCHAR(255),
     full_name VARCHAR(255),
