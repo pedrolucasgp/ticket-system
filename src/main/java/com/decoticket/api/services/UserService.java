@@ -35,7 +35,7 @@ public class UserService {
                         user.getEmail(),
                         user.getFullName(),
                         user.getIdentification(),
-                        user.getRole(),
+                        user.getRoles(),
                         user.getIsActive(),
                         user.getTicket()
                 )).toList();
@@ -50,7 +50,7 @@ public class UserService {
                 user.getEmail(),
                 user.getFullName(),
                 user.getIdentification(),
-                user.getRole(),
+                user.getRoles(),
                 user.getIsActive(),
                 user.getTicket()
         );
@@ -64,7 +64,7 @@ public class UserService {
         existingUser.setFullName(data.fullName());
         existingUser.setIdentification(data.identification());
         existingUser.setIsActive(data.isActive());
-        existingUser.setRole(data.role());
+        existingUser.setRoles(data.roles());
 
         return repository.save(existingUser);
 
