@@ -14,18 +14,18 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public User createUser(UserRequestDTO data){
-        User newUser = new User();
-        newUser.setFullName(data.fullName());
-        newUser.setEmail(data.email());
-        newUser.setPassword(data.password());
-        newUser.setIdentification(data.identification());
-        newUser.setIsActive(data.isActive());
-
-        repository.save(newUser);
-
-        return newUser;
-    }
+//    public User createUser(UserRequestDTO data){
+//        User newUser = new User();
+//        newUser.setFullName(data.fullName());
+//        newUser.setEmail(data.email());
+//        newUser.setPassword(data.password());
+//        newUser.setIdentification(data.identification());
+//        newUser.setIsActive(data.isActive());
+//
+//        repository.save(newUser);
+//
+//        return newUser;
+//    }
 
     public List<UserResponseDTO> listAll(){
         return repository.findAll()

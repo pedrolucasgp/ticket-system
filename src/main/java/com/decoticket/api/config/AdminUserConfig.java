@@ -7,7 +7,9 @@ import com.decoticket.api.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -33,14 +35,15 @@ public class AdminUserConfig implements CommandLineRunner {
             roleRepository.findByName(roleEnum.name())
                     .orElseGet(() -> {
                         Role role = new Role();
-                        role.setName(roleEnum.name()); // "ADMIN", "CUSTOMER", etc.
+                        role.setName(roleEnum.name());
                         return roleRepository.save(role);
                     });
         }
 
-        var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
+        var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Admin role not found"));
 
-        var userAdmin = userRepository.findByEmail("admin@admin.com");
+        var userAdmin = userRepository.findByEmail("admin");
 
 
         userAdmin.ifPresentOrElse(
@@ -49,11 +52,12 @@ public class AdminUserConfig implements CommandLineRunner {
                 },
                 () -> {
                     var user = new User();
-                    user.setEmail("admin@admin.com");
+                    user.setEmail("admin");
                     user.setPassword(passwordEncoder.encode("admin"));
                     user.setFullName("Admin");
                     user.setIdentification("Admin");
-                    user.setRoles(Set.of(roleAdmin.get()));
+                    user.setRoles(Set.of(roleAdmin));
+                    user.setIsActive(true);
                     userRepository.save(user);
                 }
         );

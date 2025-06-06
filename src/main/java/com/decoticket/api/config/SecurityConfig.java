@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -19,19 +21,31 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/login",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/index.html",
-                                "/swagger-ui.html",
-                                "/swagger-resources/**",
-                                "/webjars/**"
+                                "/api/login", "/api/register",
+                                "/v3/api-docs/**", "/swagger-ui/**"
                         ).permitAll()
+                        .requestMatchers("/api/user/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                        )
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthorityPrefix("");
+        converter.setAuthoritiesClaimName("roles");
+
+        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+        jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+        return jwtConverter;
     }
 
     @Bean
