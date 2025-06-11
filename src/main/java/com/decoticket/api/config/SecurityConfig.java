@@ -24,7 +24,7 @@ public class SecurityConfig {
                                 "/api/login", "/api/register",
                                 "/v3/api-docs/**", "/swagger-ui/**"
                         ).permitAll()
-                        .requestMatchers("/api/user/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/user/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-        converter.setAuthorityPrefix("");
+        converter.setAuthorityPrefix("ROLE_");
         converter.setAuthoritiesClaimName("roles");
 
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();

@@ -81,7 +81,7 @@ public class AuthController {
         }
 
         var now = Instant.now();
-        var expiresIn = 600L;
+        var expiresIn = 3600L; // 1h para testes, mudar para 10m (600).
 
         List<String> roles = user.get().getRoles().stream()
                 .map(Role::getName)
@@ -92,7 +92,7 @@ public class AuthController {
                 .subject(String.valueOf(user.get().getId()))
                 .expiresAt(now.plusSeconds(expiresIn))
                 .issuedAt(now)
-                .claim("r", roles)
+                .claim("roles", roles)
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(() -> "HS256")
