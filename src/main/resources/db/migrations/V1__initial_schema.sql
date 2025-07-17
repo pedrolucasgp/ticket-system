@@ -20,7 +20,8 @@ CREATE TABLE flight (
     departure VARCHAR(255),
     destination VARCHAR(255),
     departure_date TIMESTAMP(6),
-    arrival_date TIMESTAMP(6)
+    arrival_date TIMESTAMP(6),
+    seat_count INT NOT NULL
 );
 
 CREATE TABLE seat (
